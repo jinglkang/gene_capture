@@ -125,8 +125,8 @@ foreach my $taxon (@taxa) {
         my $q2 = substr($q, -length($seq2));
 
         print $NEWFILE ">$id\n$seq1\n$seq2\n";
-        print $NEWFILE1 "\@$header1\n$seq1\n\+\n$q1\n";
-        print $NEWFILE2 "\@$header2\n$seq2\n\+\n$q2\n";
+        print $NEWFILE1 "$header1\n$seq1\n\+\n$q1\n";
+        print $NEWFILE2 "$header2\n$seq2\n\+\n$q2\n";
 
     }
 
