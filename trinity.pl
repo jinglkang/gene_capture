@@ -24,5 +24,6 @@ foreach my $result (@results) {
                 print "Trinity is over\n";
                 my $file=$gene.".Trinity.Trinity.fasta";
                 `mv $file $out/$gene.fasta`;
+                `rm *_map`;
         }
 }
