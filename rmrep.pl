@@ -46,7 +46,7 @@ foreach my $taxon (@taxa) {
 
 
     my %uniseq; #hash for storing unique sequence, hash key: 20bp first read + 20bp second read
-    my ($key1, $key2, $key, $seq1, $seq2, $quality1, $quality2, $quality);
+    my ($key1, $key2, $key, $seq1, $seq2, $quality1, $quality2, $quality, $header1, $header2);
 
     while (my $line1 = readline ($INFILE1)) {
 
@@ -62,7 +62,9 @@ foreach my $taxon (@taxa) {
                         $uniseq{$key} = { id => $id1,
                                           quality => $quality,
                                           seq1 => $seq1,
-                                          seq2 => $seq2
+                                          seq2 => $seq2,
+                                          header1 => $header1,
+                                          header2 => $header2
                                         };
                     }
                 }
@@ -71,7 +73,9 @@ foreach my $taxon (@taxa) {
                         $uniseq{$key} = { id => $id1,
                                           quality => $quality,
                                           seq1 => $seq1,
-                                          seq2 => $seq2
+                                          seq2 => $seq2,
+                                          header1 => $header1,
+                                          header2 => $header2
                                         };
                     }
                      else {
@@ -80,6 +84,7 @@ foreach my $taxon (@taxa) {
                 }
             }
             ($id1) = $line1 =~ /^@(\S+)/; #extract the new id
+            $header1=$line1;
                 $seq1 = readline ($INFILE1); #extract the sequence line as key for hash
                 chomp $seq1;
                 $key1 = substr($seq1, 0, 20); #get the first 20 nucleotides as key
@@ -93,6 +98,7 @@ foreach my $taxon (@taxa) {
         chomp $line2;
         if ($line2 =~ /^@\S+\s+\S+/) { # if we find @
             ($id2) = $line2 =~ /^@(\S+)/; #extract the new id
+            $header2=$line2;
                 $seq2 = readline ($INFILE2); #use the sequence line as key for hash
                 chomp $seq2;
                 $key2 = substr($seq2, 0, 20); #get the first 20 nucleotides as key
@@ -108,7 +114,9 @@ foreach my $taxon (@taxa) {
     my @keys = keys (%uniseq);
     my @sortedkeys = sort (@keys);
     foreach my $key (@sortedkeys) {
-        my $id = $uniseq{$key}->{id};
+            my $id = $uniseq{$key}->{id};
+        my $header1 = $uniseq{$key}->{header1};
+        my $header2 = $uniseq{$key}->{header2};
         my $seq1 = $uniseq{$key}->{seq1};
         my $seq2 = $uniseq{$key}->{seq2};
 
@@ -117,8 +125,8 @@ foreach my $taxon (@taxa) {
         my $q2 = substr($q, -length($seq2));
 
         print $NEWFILE ">$id\n$seq1\n$seq2\n";
-        print $NEWFILE1 "\@$id 1\n$seq1\n\+\n$q1\n";
-        print $NEWFILE2 "\@$id 2\n$seq2\n\+\n$q2\n";
+        print $NEWFILE1 "\@$header1\n$seq1\n\+\n$q1\n";
+        print $NEWFILE2 "\@$header2\n$seq2\n\+\n$q2\n";
 
     }
 
