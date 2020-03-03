@@ -1,10 +1,10 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use smithwaterman; #module for pairwise alignment
-use Getopt::Long;   #include the module for input
 use FindBin 1.51 qw( $RealBin );
 use lib $RealBin;
+use smithwaterman; #module for pairwise alignment
+use Getopt::Long;   #include the module for input
 
 my $query; #variable for store query species name
 my $subject; #list of subject name
